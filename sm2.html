@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>SM2</title>
+<style>
+    p {font-family:Monospace;font-size:26px;}
+</style>
+<script type='text/javascript' src='./js/sm/sm2.min.js'></script>
+<script type='text/javascript'>
+
+var privateKey = "00CE5A8F6FF46AA7BDB199ACD634C54ECB456F3484FC4812C2ADA70DBF36F90D05";
+var publicKey = "044BFDF90A4543A4F2B49395556B1EAAB27F8037CE85DBF5F520755E2A4C7BFBB3D179EA650A7DF7C0CF1341E209328B044ED5FCCCCF0FC2DF28CFD0E89C889392";
+
+function display() {
+	var str = document.getElementById("code").value;
+    //  sm2 加解密 密文04开头
+    var encode = smEncrypt.sm2Encrypt(str, publicKey);
+    var decode = smEncrypt.sm2Decrypt(encode, privateKey);
+    document.getElementById("enced").innerHTML=encode;
+    document.getElementById("deced").innerHTML=decode;
+
+	// sm2 加解密 密文非04开头 
+	// 公钥私钥都必须转换成小写
+	var cipherMode = 0;// cipherMode默认0，为0时可不传
+	var encode2 = smEncrypt.sm2.doEncrypt(str, publicKey, cipherMode);
+	var decode2 = smEncrypt.sm2.doDecrypt(encode2, privateKey, cipherMode);
+	document.getElementById("enced2").innerHTML=encode2;
+    document.getElementById("deced2").innerHTML=decode2;
+}
+</script>
+</head>
+<body onload="javascript:display();">
+
+<h1>SM2 加密(密文04开头)</h1>
+密文<p id="enced"></p>
+解密<p id="deced"></p>
+
+<h1>SM2 加密(密文非04开头)</h1>
+密文<p id="enced2"></p>
+解密<p id="deced2"></p>
+
+明文：<input id='code' type='txt' name='明文' value="测试明文">
+<button id="btn" type="button" onclick="javascript:display();">加密</button>
+
+</body>
+</html>
